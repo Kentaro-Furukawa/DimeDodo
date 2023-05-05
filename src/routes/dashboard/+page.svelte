@@ -17,6 +17,7 @@
   function addRecord() {
     error = false;
     newRecord = newRecord.trim();
+    console.log(newRecord);
     if (!newRecord) {
       return (error = true);
     }
@@ -61,7 +62,7 @@
         {/each}
       {/if}
     </main>
-    <EnterRecord {error} {newRecord} {addRecord} />
+    <EnterRecord {error} bind:newRecord {addRecord} />
   </div>
 {/if}
 
