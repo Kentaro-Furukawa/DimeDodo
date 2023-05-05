@@ -9,31 +9,39 @@
   let authenticating = false;
 
   async function handleAuthenticate() {
-    if (authenticating) { return }
+    if (authenticating) {
+      return;
+    }
 
     if (!email || !password || (register && !confirmPassword)) {
       error = true;
       retun;
     }
 
-    authenticating = true
+    if (register && !(password === confirmPassword)) {
+      error = true;
+      return;
+    }
+
+    authenticating = true;
 
     try {
       if (!register) {
-        await authHandlers.login(email, password);
+        await authHandlers.logIn(email, password);
       } else {
-        await authHandlers.signup(email, password);
+        await authHandlers.signUp(email, password);
       }
     } catch (err) {
       console.log('Error: ', err);
       error = true;
     } finally {
-      authenticating = false
+      authenticating = false;
     }
   }
 
   function handleReginter() {
     register = !register;
+    error = false;
   }
 </script>
 
@@ -77,7 +85,7 @@
     {/if}
     <button on:click={handleAuthenticate} type="submit">
       {#if authenticating}
-      <span class="spin">🧐</span>
+        <span class="spin">🧐</span>
       {:else}
         Submit
       {/if}
@@ -186,6 +194,7 @@
   }
 
   .error {
+    text-align: center;
     color: rgb(253, 203, 196);
     font-size: 0.8em;
   }
