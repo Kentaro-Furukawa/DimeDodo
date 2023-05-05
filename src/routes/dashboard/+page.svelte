@@ -1,8 +1,13 @@
 <script>
-  let recordList = ['do one thing', 'do one thing', 'do one thing'];
+    import { authHandlers, authStore } from "../../store/store";
 
+  let recordList = [];
   let newRecord = '';
   let error = false;
+
+  // authStore.subscribe((curr) => {
+  //   recordList = curr.data
+  // })
 
   function addRecord() {
     error = false;
@@ -34,13 +39,13 @@
     <h1>My Dime Dodo</h1>
     <div class="headerButtons">
       <button>Save</button>
-      <button>Logout</button>
+      <button on:click={authHandlers.logout}>Logout</button>
     </div>
   </div>
   <main>
     {#if recordList.length === 0}
     <p>You have no record.</p>
-    {/if}
+    {:else}
     {#each recordList as record, index}
       <div class="record">
         {index + 1}.{record}
@@ -50,6 +55,7 @@
         </div>
       </div>
     {/each}
+    {/if}
   </main>
   <div class={"enterRecord " + (error ? "errorBorder" : "")}>
     <input bind:value={newRecord} type="text" placeholder="Enter record" />
