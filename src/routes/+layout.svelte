@@ -58,7 +58,7 @@
 
 <style>
   .mainContainer {
-    /* min-height: 100vh; */
+    min-height: 100vh;
     background: linear-gradient(to right, #000028, #020a50);
     color: white;
     position: relative;
