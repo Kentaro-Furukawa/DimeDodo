@@ -6,8 +6,25 @@
   import DashboardHeader from '../../components/DashboardHeader.svelte';
   import EnterRecord from '../../components/EnterRecord.svelte';
 
+  
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  let typeOptions = [
+    {id: 1, value: 'food', text: 'Food'},
+    {id: 2, value: 'inBadget', text: 'In Badget'},
+    {id: 3, value: 'nonBadget', text: 'Non Badget'},
+  ]
+  
   let recordList = [];
-  let newRecord = '';
+  
+  let newRecord = {
+    date: today,
+    type: typeOptions.at(0),
+    label: '',
+    amount: 0,
+  }
+
   let error = false;
 
   authStore.subscribe((curr) => {
@@ -16,9 +33,9 @@
 
   function addRecord() {
     error = false;
-    newRecord = newRecord.trim();
+    newRecord.label = newRecord.label.trim();
     console.log(newRecord);
-    if (!newRecord) {
+    if (!newRecord.label || !newRecord.type) {
       return (error = true);
     }
     recordList = [...recordList, newRecord];
@@ -62,7 +79,7 @@
         {/each}
       {/if}
     </main>
-    <EnterRecord {error} bind:newRecord {addRecord} />
+    <EnterRecord {error} {typeOptions} bind:newRecord {addRecord} />
   </div>
 {/if}
 
