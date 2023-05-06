@@ -5,7 +5,7 @@
 </script>
 
 <div class="headerContainer">
-  <h1>My Dime Dodo</h1>
+  <h1>Dime Dodo 🦤</h1>
   <div class="headerButtons">
     <button on:click={saveRecord}>Save</button>
     <button on:click={authHandlers.logOut}>Logout</button>
@@ -18,6 +18,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 1em 0.5em;
+  }
+
+  .headerContainer h1 {
+    font-size: 1.8em;
   }
 
   .headerButtons {

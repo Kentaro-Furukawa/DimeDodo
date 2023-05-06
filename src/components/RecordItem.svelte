@@ -1,16 +1,27 @@
 <script>
-export let index
-export let record
-export let editRecord
-export let removeRecord
+  export let record;
+  export let editRecord;
+  export let removeRecord;
 
+  const keyID = record.getPropertyName();
 </script>
 
 <div class="record">
-  {index + 1}.{record}
+  <div class="recordDetails">
+    {#if record[keyID].recordType === 'food'}
+      <div class="recordType bgOrange">{record[keyID].recordType}</div>
+    {:else if record[keyID].recordType === 'inBadget'}
+      <div class="recordType bgGreen">{record[keyID].recordType}</div>
+    {:else}
+      <div class="recordType bgPurple">{record[keyID].recordType}</div>
+    {/if}
+    <!-- {record.formatDate} -->
+    <div>{record[keyID].label}</div>
+  </div>
+  <div>{record[keyID].amount}</div>
   <div class="action">
-    <button on:click={() => editRecord(index)}>Edit</button>
-    <button on:click={() => removeRecord(index)}>Remove</button>
+    <!-- <button on:click={() => editRecord(keyID)}>Edit</button> -->
+    <button on:click={() => removeRecord(keyID)}>Remove</button>
   </div>
 </div>
 
@@ -19,8 +30,31 @@ export let removeRecord
     border-left: 1px solid cyan;
     padding: 0.2em 0.5em;
     display: flex;
+    gap: 1em;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .recordDetails {
+    flex: 1;
+    display: flex;
+    gap: 1em;
+  }
+
+  .recordType {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    padding: 0.2em 0.4em;
+    border-radius: 5px;
+  }
+  .bgOrange {
+    background: rgba(255, 166, 0, 0.395);
+  }
+  .bgGreen {
+    background: rgba(16, 239, 0, 0.395);
+  }
+  .bgPurple {
+    background: rgba(174, 0, 255, 0.395);
   }
 
   .record .action {

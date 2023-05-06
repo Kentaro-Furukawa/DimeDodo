@@ -4,14 +4,13 @@
   export let newRecord;
   export let addRecord;
 
-  let formattedDate = formatDate(newRecord.date);
+  let formattedDate = newRecord.formatDate
+  
+  let recordKey;
 
-  function formatDate(date) {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+  $: {
+    recordKey = newRecord.getPropertyName()
+    newRecord[recordKey].date = parseDate(formattedDate);
   }
 
   function parseDate(dateString) {
@@ -19,36 +18,35 @@
     return new Date(year, month - 1, day);
   }
 
-  $: {
-    newRecord.date = parseDate(formattedDate);
-  }
 </script>
 
 <div class={'enterRecord ' + (error ? 'errorBorder' : '')}>
   <div>
     <input type="date" bind:value={formattedDate} required />
-    <select bind:value={newRecord.type} required>
-      {#each typeOptions as type (type.id)}
-        <option value={type}>
-          {type.text}
+    <select bind:value={newRecord[recordKey].recordType} required>
+      {#each typeOptions as typeOption (typeOption.id)}
+        <option value={typeOption.value}>
+          {typeOption.text}
         </option>
       {/each}
     </select>
   </div>
   <div>
-    <input bind:value={newRecord.label} type="text" placeholder="Enter label" required />
-    <input bind:value={newRecord.amount} type="number" name="amount" required />
-    <button on:click={addRecord}>ADD</button>
+    <input bind:value={newRecord[recordKey].label} type="text" placeholder="Enter label" required />
+    <input bind:value={newRecord[recordKey].amount} type="number" placeholder="Enter amount" required />
+    <button on:click={addRecord(newRecord)}>ADD</button>
   </div>
 </div>
 
 <style>
   .enterRecord {
+    width: 80%;
+    max-width: 620px;
     align-self: center;
     display: flex;
     gap: 1em;
-    /* align-items: stretch; */
     flex-direction: column;
+    background: rgba(0, 0, 128, 0.889);
     border: 1px solid cyan;
     border-radius: 5px;
     padding: 0.5em 1em;
